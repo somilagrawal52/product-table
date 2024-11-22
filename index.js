@@ -1,3 +1,4 @@
+require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
@@ -7,8 +8,7 @@ const productRoute = require("./routes/product");
 const { checkforauthentication } = require("./middlewares/auth");
 const Product = require("./models/product");
 const app = express();
-const port = process.env.port || 5010;
-require("dotenv").config();
+const PORT = process.env.port;
 
 mongoose
   .connect(process.env.database_url)
@@ -62,4 +62,4 @@ app.get("/clear/:id", async (req, res) => {
 app.use("/user", userRoute);
 app.use("/product", productRoute);
 
-app.listen(port, () => console.log(`server started at port:${port}`));
+app.listen(PORT, () => console.log(`server started at port:${PORT}`));

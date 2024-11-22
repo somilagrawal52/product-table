@@ -69,6 +69,7 @@
                 >
                   Save
                 </button>
+                <button type="button" class="btn btn-secondary cancel" style="display: none;">Cancel</button>
               </td>
             </tr>
             <% }) %>
@@ -80,33 +81,42 @@
    
       <script>
       
-        $(document).ready(function () {
-          $(".edit").on("click", function () {
-            var row = $(this).closest("tr");
-            row
-              .find(".editable")
-              .attr("contenteditable", "true")
-            row.find(".save").show();
-            $(this).hide();
-          });
+      $(document).ready(function () { $(".edit").on("click", function () { 
+        var row = $(this).closest("tr"); row.find(".editable").each(function () {  
+          $(this).data("original-content", $(this).text().trim());
+
+       }).attr("contenteditable", "true").addClass("style"); 
+       row.find(".save, .cancel").show(); $(this).hide(); 
+      });
   
+          $(".cancel").on("click", function () { 
+            var row = $(this).closest("tr"); row.find(".editable").each(function () { 
+             $(this).text($(this).data("original-content")).removeClass("style"); 
+            }).attr("contenteditable", "false"); 
+             row.find(".save").hide(); row.find(".edit").show(); $(this).hide();
+             });
+
           $("#updateForm").on("submit", function () {
             $("tr").each(function () {
               var row = $(this);
               row
                 .find('input[name="names"]')
-                .val(row.find('[data-field="name"]').text());
+                .val(row.find('[data-field="name"]').text().trim());
               row
                 .find('input[name="prices"]')
-                .val(row.find('[data-field="price"]').text());
+                .val(row.find('[data-field="price"]').text().trim());
               row
                 .find('input[name="descriptions"]')
-                .val(row.find('[data-field="description"]').text());
+                .val(row.find('[data-field="description"]').text().trim());
             });
           });
         });
       </script>
-    
+    <style>
+      .style{
+        border: 1px solid #000000;
+      }
+    </style>
     </style>
   </body>
 </html>
